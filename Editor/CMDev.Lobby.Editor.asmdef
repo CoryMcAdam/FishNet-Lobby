@@ -1,0 +1,18 @@
+{
+    "name": "CMDev.Lobby.Editor",
+    "rootNamespace": "CMDev.Lobby.Editor",
+    "references": [
+        "GUID:0bdf79b2924228a48ab1c407c19bb534"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
