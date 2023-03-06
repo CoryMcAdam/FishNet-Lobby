@@ -4,7 +4,7 @@ using FishNet.Object;
 using FishNet.Transporting;
 using UnityEngine;
 
-namespace CMDev.Lobby.Spawning
+namespace CMDev.Networking.Spawning
 {
     public class ServerObjectSpawner : MonoBehaviour
     {

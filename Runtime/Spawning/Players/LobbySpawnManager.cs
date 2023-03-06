@@ -1,7 +1,7 @@
 using FishNet;
 using System.Collections.Generic;
 
-namespace CMDev.Lobby.Spawning
+namespace CMDev.Networking.Lobby.Spawning
 {
     public class LobbySpawnManager : SpawnManagerBase
     {

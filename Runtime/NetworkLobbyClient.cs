@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
-namespace CMDev.Lobby
+namespace CMDev.Networking.Lobby
 {
     public class NetworkLobbyClient : NetworkBehaviour
     {
@@ -30,7 +30,19 @@ namespace CMDev.Lobby
         //PROPERTIES.
         public bool IsLoaded { get { return _loadState == EClientLoadState.Loaded; } }
         public static ReadOnlyCollection<NetworkLobbyClient> All { get { return _all.AsReadOnly(); } }
-        public static bool AllLoaded { get { return _allLoaded; } }
+        public static bool AllLoaded
+        {
+            get
+            {
+                for (int i = 0; i < _all.Count; i++)
+                {
+                    if (!_all[i].IsLoaded)
+                        return false;
+                }
+
+                return true;
+            }
+        }
 
         public static NetworkLobbyClient LocalClient
         {
@@ -81,7 +93,7 @@ namespace CMDev.Lobby
         {
             base.OnStopNetwork();
 
-            if(base.Owner.IsLocalClient)
+            if (base.Owner.IsLocalClient)
             {
                 SceneManager.OnQueueStart -= SceneManager_OnQueueStart;
                 SceneManager.OnQueueEnd -= SceneManager_OnQueueEnd;

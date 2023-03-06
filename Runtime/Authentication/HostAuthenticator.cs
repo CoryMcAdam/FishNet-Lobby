@@ -10,7 +10,7 @@ using UnityEngine;
 //Host authenticator from FishNet examples.
 //Used by the lobby authenticator.
 
-namespace CMDev.Lobby.Authentication
+namespace CMDev.Networking.Lobby.Authentication
 {
     /// <summary>
     /// This authenticator is an example of how to let host bypass the authentication process.

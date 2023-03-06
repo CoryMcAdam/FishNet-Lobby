@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace CMDev.Lobby
+namespace CMDev.Networking.Lobby
 {
     public class NetworkLobbyManager : NetworkBehaviour
     {

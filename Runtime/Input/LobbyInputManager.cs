@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace CMDev.Lobby.Input
+namespace CMDev.Networking.Lobby.Input
 {
     public class LobbyInputManager : MonoBehaviour
     {

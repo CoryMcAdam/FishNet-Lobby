@@ -1,6 +1,6 @@
 using UnityEngine.InputSystem;
 
-namespace CMDev.Lobby.Input
+namespace CMDev.Networking.Lobby.Input
 {
     public static class InputManager
     {

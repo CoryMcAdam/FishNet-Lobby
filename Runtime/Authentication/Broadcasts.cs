@@ -1,6 +1,6 @@
 ﻿using FishNet.Broadcast;
 
-namespace CMDev.Lobby.Authentication
+namespace CMDev.Networking.Lobby.Authentication
 {
     public struct HostPasswordBroadcast : IBroadcast
     {

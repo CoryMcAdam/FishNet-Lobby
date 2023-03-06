@@ -3,7 +3,7 @@ using FishNet.Managing;
 using FishNet.Transporting;
 using System;
 
-namespace CMDev.Lobby.Authentication
+namespace CMDev.Networking.Lobby.Authentication
 {
     public class LobbyAuthenticator : HostAuthenticator
     {

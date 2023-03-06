@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMDev.Lobby
+namespace CMDev.Networking.Lobby
 {
     public class NetworkGamePlayer : NetworkBehaviour
     {

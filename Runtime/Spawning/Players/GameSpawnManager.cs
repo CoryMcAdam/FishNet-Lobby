@@ -1,7 +1,7 @@
 using FishNet;
 using FishNet.Object;
 
-namespace CMDev.Lobby.Spawning
+namespace CMDev.Networking.Lobby.Spawning
 {
     public class GameSpawnManager : SpawnManagerBase
     {

@@ -1,4 +1,4 @@
-namespace CMDev.Lobby
+namespace CMDev.Networking.Lobby
 {
     public static class LobbySettings
     {

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace CMDev.Lobby
+namespace CMDev.Networking.Lobby
 {
     public class NetworkLobbyPlayer : NetworkBehaviour
     {

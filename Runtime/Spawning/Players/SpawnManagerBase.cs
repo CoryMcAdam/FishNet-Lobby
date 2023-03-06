@@ -2,7 +2,7 @@ using FishNet;
 using FishNet.Object;
 using UnityEngine;
 
-namespace CMDev.Lobby.Spawning
+namespace CMDev.Networking.Lobby.Spawning
 {
     public abstract class SpawnManagerBase : MonoBehaviour
     {
@@ -34,7 +34,7 @@ namespace CMDev.Lobby.Spawning
 
         private Transform GetSpawnTransform(int index)
         {
-            return spawnpoints[index % (spawnpoints.Length-1)];
+            return spawnpoints[index % (spawnpoints.Length - 1)];
         }
     }
 }
