@@ -2,78 +2,92 @@ using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Collections.ObjectModel;
 
 namespace CMDev.Networking.Lobby
 {
+    /// <summary>
+    /// Represents a game player object for gameplay scenes.
+    /// </summary>
     public class NetworkGamePlayer : NetworkBehaviour
     {
+        //PRIVATE FIELDS.
+        private static List<NetworkGamePlayer> _all = new List<NetworkGamePlayer>();
+
+        //SYNCED FIELDS.
         [SyncVar]
-        public int Index = -1;
+        private int _index = -1;
 
+        #region PROPERTIES
+        /// <summary>
+        /// The index of the game player, should match the index of the linked lobby player.
+        /// </summary>
+        public int Index { get { return _index; } }
+
+        /// <summary>
+        /// A ready only list of all current game players.
+        /// </summary>
+        public static ReadOnlyCollection<NetworkGamePlayer> All { get { return _all.AsReadOnly(); } }
+        #endregion
+
+        #region EVENTS
+        /// <summary>
+        /// Called when a game player is created.
+        /// <para>Passes the game player that was added.</para>
+        /// </summary>
         public static event Action<NetworkGamePlayer> PlayerAddedEvent;
+
+        /// <summary>
+        /// Called when a game player is destroyed.
+        /// <para>Passes the game player that was removed.</para>
+        /// </summary>
         public static event Action<NetworkGamePlayer> PlayerRemovedEvent;
+        #endregion
 
-        public static List<NetworkGamePlayer> AllPlayers;
-
-
+        #region MonoBehaviour
         private void Awake()
         {
-            Debug.Log($"Player ? spawned at {transform.position}", this);
-        }
-
-        public override void OnStartNetwork()
-        {
-            base.OnStartNetwork();
-
-            Debug.Log($"Player {Index} spawned on server at {transform.position}", this);
-        }
-
-        public override void OnStartClient()
-        {
-            base.OnStartClient();
-
-            Debug.Log($"Player {Index} started on client", this);
-
             AddPlayer();
         }
 
-        public override void OnStartServer()
+        private void OnDestroy()
         {
-            base.OnStartServer();
-
-            Debug.Log($"Player {Index} started on server", this);
-        }
-
-        public override void OnStopClient()
-        {
-            base.OnStopClient();
-
             RemovePlayer();
         }
+        #endregion
 
+        /// <summary>
+        /// Adds the player to the all players list and invokes an event.
+        /// </summary>
         private void AddPlayer()
         {
-            if (AllPlayers == null)
-                AllPlayers = new List<NetworkGamePlayer>();
-
-            if (!AllPlayers.Contains(this))
+            if (!_all.Contains(this))
             {
-                AllPlayers.Add(this);
+                _all.Add(this);
                 PlayerAddedEvent?.Invoke(this);
             }
         }
 
+        /// <summary>
+        /// Removes the player from the all players list and invokes an event.
+        /// </summary>
         private void RemovePlayer()
         {
-            if (AllPlayers == null)
-                return;
-
-            if (AllPlayers.Contains(this))
+            if (_all.Contains(this))
             {
-                AllPlayers.Remove(this);
+                _all.Remove(this);
                 PlayerRemovedEvent?.Invoke(this);
             }
+        }
+
+        /// <summary>
+        /// [Server] Sets the index of the game player.
+        /// </summary>
+        /// <param name="value">The new index.</param>
+        [Server]
+        public void SetIndex(int value)
+        {
+            _index = value;
         }
     }
 }

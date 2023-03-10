@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace CMDev.Networking.Spawning
 {
+    /// <summary>
+    /// Spawns an object when the server starts.
+    /// </summary>
     public class ServerObjectSpawner : MonoBehaviour
     {
         //EDITOR FIELDS.
@@ -16,6 +19,7 @@ namespace CMDev.Networking.Spawning
         private NetworkManager _networkManager;
         private bool _spawnedOnce = false;
 
+        #region MonoBehaviour
         private void Awake()
         {
             _networkManager = InstanceFinder.NetworkManager;
@@ -30,7 +34,12 @@ namespace CMDev.Networking.Spawning
                 _networkManager.ServerManager.OnServerConnectionState -= ServerManager_OnServerConnectionState;
             }
         }
+        #endregion
 
+        /// <summary>
+        /// Called when the server connection state changes. Spawns an object once if the server started, and resets if the server stopped.
+        /// </summary>
+        /// <param name="state">The connection state args.</param>
         private void ServerManager_OnServerConnectionState(ServerConnectionStateArgs state)
         {
             switch (state.ConnectionState)
@@ -48,11 +57,15 @@ namespace CMDev.Networking.Spawning
             }
         }
 
+        /// <summary>
+        /// If being called by the server, spawns an object on the network.
+        /// </summary>
         private void SpawnObjectIfServer()
         {
             if (!InstanceFinder.IsServer)
                 return;
 
+            //Make sure to only spawn the object once each time the server starts.
             if (_spawnedOnce)
                 return;
 

@@ -4,19 +4,23 @@ using UnityEngine.InputSystem;
 
 namespace CMDev.Networking.Lobby.Input
 {
+    /// <summary>
+    /// Handles local inputs for joining and leaving the lobby. Spawns a local object to represent an input device and helps bind it to a lobby player.
+    /// </summary>
     public class LobbyInputManager : MonoBehaviour
     {
-        //Editor fields
+        //EDITOR FIELDS.
         [Header("Joining")]
         [SerializeField] private InputActionProperty joinAction;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject localInputPrefab;
 
-        //Private fields
+        //PRIVATE FIELDS.
         private NetworkLobbyManager _lobbyManager;
-        private List<InputDevice> _pendingDevices = new List<InputDevice>();
+        private List<InputDevice> _pendingDevices = new List<InputDevice>(); //A list of all devices waiting for a network object to bind to.
 
+        #region MonoBehaviour
 
         private void Awake()
         {
@@ -50,6 +54,12 @@ namespace CMDev.Networking.Lobby.Input
             joinAction.action.Enable();
         }
 
+        #endregion
+
+        /// <summary>
+        /// Called when the lobby manager starts. Joins the primary input to the lobby.
+        /// </summary>
+        /// <param name="asServer">Was the lobby started as server.</param>
         private void LobbyManager_Started(bool asServer)
         {
             if (asServer)
@@ -59,6 +69,10 @@ namespace CMDev.Networking.Lobby.Input
             JoinLocalPlayer(InputManager.PrimaryInput);
         }
 
+        /// <summary>
+        /// Called when a join action is performed by any device.
+        /// </summary>
+        /// <param name="context">Context for the performed action such as the device that performed it.</param>
         private void JoinAction_Performed(InputAction.CallbackContext context)
         {
             Debug.Log("Join action performed.", this);
@@ -102,6 +116,10 @@ namespace CMDev.Networking.Lobby.Input
             return true;
         }
 
+        /// <summary>
+        /// Tries to join the lobby for a local input device.
+        /// </summary>
+        /// <param name="device">The input device to join as.</param>
         private void JoinLocalPlayer(InputDevice device)
         {
             RequestPlayerForDevice(device);
@@ -110,6 +128,7 @@ namespace CMDev.Networking.Lobby.Input
         /// <summary>
         /// Requests player spawn if device is successfully added to queue.
         /// </summary>
+        /// <param name="device">The input device to request a player for.</param>
         private void RequestPlayerForDevice(InputDevice device)
         {
             if (AddPendingDeviceToQueue(device))
@@ -121,7 +140,7 @@ namespace CMDev.Networking.Lobby.Input
         /// <summary>
         /// Adds a pending device to the queue.
         /// </summary>
-        /// <param name="device"></param>
+        /// <param name="device">The input device to add to the queue.</param>
         /// <returns>True if device was added to the queue.</returns>
         private bool AddPendingDeviceToQueue(InputDevice device)
         {
@@ -148,6 +167,7 @@ namespace CMDev.Networking.Lobby.Input
         /// <summary>
         /// Removes a pending device from the queue.
         /// </summary>
+        /// <param name="device">The input device to remove from the queue.</param>
         /// <returns>True if device was removed successfully.</returns>
         private bool RemovePendingDeviceFromQueue(InputDevice device)
         {
@@ -163,6 +183,9 @@ namespace CMDev.Networking.Lobby.Input
             return true;
         }
 
+        /// <summary>
+        /// Called when the lobby manager fails to create a lobby player for the local client. Removes the first pending device from the list.
+        /// </summary>
         private void LobbyManager_CreatePlayerFailed()
         {
             if (_pendingDevices.Count <= 0)
@@ -174,6 +197,10 @@ namespace CMDev.Networking.Lobby.Input
             _pendingDevices.RemoveAt(0);
         }
 
+        /// <summary>
+        /// Called when a new player is added to the lobby. Checks if owner is local and then creates an input for it.
+        /// </summary>
+        /// <param name="player">The lobby player added to the lobby.</param>
         private void LobbyManager_OnPlayerAdded(NetworkLobbyPlayer player)
         {
             if (player.Owner.IsLocalClient)
@@ -183,8 +210,9 @@ namespace CMDev.Networking.Lobby.Input
         }
 
         /// <summary>
-        /// Creates a local player input object for lobby player.
+        /// Creates a local player input object for lobby player using the first pending device in the list.
         /// </summary>
+        /// <param name="player">The lobby player to create an input for.</param>
         private void CreateLocalInputForPlayer(NetworkLobbyPlayer player)
         {
             Debug.Log("Trying to create local input for player", this);
@@ -216,6 +244,10 @@ namespace CMDev.Networking.Lobby.Input
             _pendingDevices.Remove(device);
         }
 
+        /// <summary>
+        /// Called when a new player is removed from the lobby.
+        /// </summary>
+        /// <param name="player">The lobby player removed from the lobby.</param>
         private void LobbyManager_OnPlayerRemoved(NetworkLobbyPlayer player)
         {
 

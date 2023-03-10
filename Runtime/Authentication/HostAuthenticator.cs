@@ -9,7 +9,6 @@ using UnityEngine;
 
 //Host authenticator from FishNet examples.
 //Used by the lobby authenticator.
-
 namespace CMDev.Networking.Lobby.Authentication
 {
     /// <summary>

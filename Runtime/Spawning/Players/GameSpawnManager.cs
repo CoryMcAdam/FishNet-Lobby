@@ -3,10 +3,14 @@ using FishNet.Object;
 
 namespace CMDev.Networking.Lobby.Spawning
 {
+    /// <summary>
+    /// Spawer class for spawning all players at the same time after all clients are loaded.
+    /// </summary>
     public class GameSpawnManager : SpawnManagerBase
     {
         private bool _spawned;
 
+        #region MonoBehaviour
         private void Awake()
         {
             _spawned = false;
@@ -23,13 +27,20 @@ namespace CMDev.Networking.Lobby.Spawning
         {
             NetworkLobbyClient.AllClientsLoadedSceneEvent -= LobbyClient_AllClientsLoadedScene;
         }
+        #endregion
 
+        /// <summary>
+        /// Called when all clients have loaded the global scene. If server, spawns all players.
+        /// </summary>
         private void LobbyClient_AllClientsLoadedScene()
         {
             if (InstanceFinder.IsServer)
                 SpawnAllPlayers();
         }
 
+        /// <summary>
+        /// [Server] Spawns a game player for each lobby player. Runs once.
+        /// </summary>
         [Server]
         private void SpawnAllPlayers()
         {

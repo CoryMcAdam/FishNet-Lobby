@@ -6,12 +6,18 @@ using UnityEngine;
 
 namespace CMDev.Networking.Spawning
 {
+    /// <summary>
+    /// Spawns an object for each connecting client.
+    /// </summary>
     public class ClientObjectSpawner : MonoBehaviour
     {
+        //EDITOR FIELDS.
         [SerializeField] private NetworkObject clientPrefab;
 
+        //PRIVATE FIELDS.
         private NetworkManager _networkManager;
 
+        #region MonoBehaviour
         private void Awake()
         {
             _networkManager = InstanceFinder.NetworkManager;
@@ -26,7 +32,13 @@ namespace CMDev.Networking.Spawning
                 _networkManager.SceneManager.OnClientLoadedStartScenes -= SceneManager_OnClientLoadedStartScenes;
             }
         }
+        #endregion
 
+        /// <summary>
+        /// Called when a client loads the starting scene. Spawns an object on the server with the client as owner.
+        /// </summary>
+        /// <param name="conn">The connection that loaded the start scene.</param>
+        /// <param name="asServer">Is this being called as the server.</param>
         private void SceneManager_OnClientLoadedStartScenes(NetworkConnection conn, bool asServer)
         {
             if (!asServer)
